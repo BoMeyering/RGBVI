@@ -1,0 +1,37 @@
+[project]
+name = "rgbvi"
+version = "0.1.0"
+description = "A collection of RGB-based vegetative indices for Python with sane defaults."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Bo Meyering", email = "bomeyering@proton.me" },
+]
+dependencies = [
+    "numpy>=1.24.4",
+    "opencv-python>=4.11.0.86",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/BoMeyering/RGBVI"
+Repository = "https://github.com/BoMeyering/RGBVI"
+Issues = "https://github.com/BoMeyering/RGBVI/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
