@@ -11,9 +11,11 @@ from typing import Callable, Tuple, Optional, Dict
 @dataclass
 class IndexSpec:
     name: str
+    full_name: str
     formula: Callable[[np.ndarray, np.ndarray, np.ndarray], np.ndarray]
-    domain: Optional[Tuple[float, float]] # Theoretical raw range
-    map01: bool # Whether to map raw domain to [0, 1]
+    domain: Optional[Tuple[float, float]] # Theoretical raw range when images are normalized to [0, 1]
+    map01: bool # Whether to map raw domain to [0, 1],
+    citation: Optional[str]=None
 
 EPS = 1e-6
 INDEX_SPECS: Dict[str, IndexSpec] = {}
