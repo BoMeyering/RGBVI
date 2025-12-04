@@ -1,0 +1,24 @@
+site_name: RGBVI
+site-url: 
+theme:
+  logo: logo.png
+  favicon: favicon.png
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.instant.preview
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: green
+      scheme: default
+      toggle: 
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: green
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
