@@ -5,6 +5,7 @@ BoMeyering 2025
 """
 
 import torch
+import cv2
 import numpy as np
 from typing import Optional
 from numpy.typing import ArrayLike
@@ -90,11 +91,13 @@ def compute_index(
             img = np.asarray(img).astype(np.float32)
     except Exception as e:
         raise ValueError("Failed to convert input image to NumPy array.") from e
-    
+
+    img = np.where(img == 1, 1, img) # Fill in pixels with 1 to avoid division by zero
     img /= 255.0 # Normalize to [0, 1]
     R, G, B = img[..., 0], img[..., 1], img[..., 2]
 
     if mask is not None:
+        print(True)
         mask = standardize_mask(mask)
         # if erode is not None and erode > 0:
         #     structure = np.ones((2*erode+1, 2*erode+1), dtype=bool)
@@ -105,13 +108,10 @@ def compute_index(
     idx_raw = spec.formula(R, G, B)
     valid = np.isfinite(idx_raw)
 
-    print("IDX raw:", idx_raw.shape)
-    print("Valid shape:", valid.shape)
-    print("Mask shape:", mask.shape)
-    print(mask & valid)
     # Mask the raw_idx to only valid pixels
-    # values = idx_raw[mask & valid]
-    values = idx_raw
+    values = idx_raw * valid
+
+
     print("Values shape:", values.shape)
     if values.size == 0:
         return np.nan * np.ones_like(idx_raw)
@@ -128,5 +128,5 @@ def compute_index(
         values = np.clip(values, p5, p95)
 
     # return values.mean().astype(np.float32)
-    return values
+    return values * mask
 

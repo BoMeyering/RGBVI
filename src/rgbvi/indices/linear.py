@@ -113,6 +113,18 @@ register_index(
     )
 )
 
+# RGBVI: RGB Vegetation Index: (G^2 - R*B) / (G^2 + R*B), with R,G,B in [0,1] => [-1,1]
+register_index(
+    IndexSpec(
+        name="rgbvi",
+        full_name="RGB Vegetation Index",
+        formula=lambda R,G,B: (G**2 - R*B) / (G**2 + R*B + 1e-6), # small constant to avoid division by zero
+        domain=(-1, 1),
+        map01=True,
+        citation="Meyer, G.E.; Hindman, T.W.; Laksmi, K. 'Color vegetation indices for automated crop imaging applications', Proceedings of SPIE - The International Society for Optical Engineering, 1999, vol. 3583, pp. 349-356, doi: 10.1117/12.336833."
+    )
+)
+
 
 
 def exg(img: np.ndarray, **kwargs) -> np.ndarray:
