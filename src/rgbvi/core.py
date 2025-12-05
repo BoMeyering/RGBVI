@@ -94,12 +94,6 @@ def compute_index(
     img /= 255.0 # Normalize to [0, 1]
     R, G, B = img[..., 0], img[..., 1], img[..., 2]
 
-    sums = R + G + B
-    # sums[sums < den_min] = den_min
-    R /= sums
-    G /= sums
-    B /= sums
-
     if mask is not None:
         mask = standardize_mask(mask)
         # if erode is not None and erode > 0:
@@ -111,10 +105,14 @@ def compute_index(
     idx_raw = spec.formula(R, G, B)
     valid = np.isfinite(idx_raw)
 
-    print(idx_raw)
-
+    print("IDX raw:", idx_raw.shape)
+    print("Valid shape:", valid.shape)
+    print("Mask shape:", mask.shape)
+    print(mask & valid)
     # Mask the raw_idx to only valid pixels
-    values = idx_raw[mask & valid]
+    # values = idx_raw[mask & valid]
+    values = idx_raw
+    print("Values shape:", values.shape)
     if values.size == 0:
         return np.nan * np.ones_like(idx_raw)
 

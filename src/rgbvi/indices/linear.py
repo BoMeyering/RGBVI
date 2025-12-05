@@ -91,6 +91,27 @@ register_index(
     )
 )
 
+# vNDVI - Visible Band NDVI: 0.5268 * (R ** -0.1294 * G ** 0.3389 * B ** -0.3118) with R,G,B in [0,1] => [-1,1]
+register_index(
+    IndexSpec(
+        name="vndvi",
+        full_name="Visible Band NDVI",
+        formula=lambda R,G,B: 0.5268 * (R ** -0.1294 * G ** 0.3389 * B ** -0.3118),
+        domain=(0.0506927, 11.0980267),
+        map01=True
+    )
+)
+
+# MEXG: Modified Excess Green: 1.262*G - 0.884*R - 0.311*B, with R,G,B in [0,1] => [-1.195, 1.262]
+register_index(
+    IndexSpec(
+        name="mexg",
+        full_name="Modified Excess Green",
+        formula=lambda R,G,B: 1.262*G - 0.884*R - 0.311*B,
+        domain=(-1.195, 1.262),
+        map01=True
+    )
+)
 
 
 

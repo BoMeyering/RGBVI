@@ -35,3 +35,15 @@ register_index(
         citation=""
     )
 )
+
+# MGRVI: (G - R) / (G + R + B + EPS), with R,G,B in [0,1] => [-1, 1]
+register_index(
+    IndexSpec(
+        name="mgrvi",
+        full_name="Modified Green Red Vegetation Index",
+        formula=lambda R,G,B: (G**2 - R**2) / (G**2 + R**2 + EPS),
+        domain=(-1000, 1000),
+        map01=True,
+        citation=""
+    )
+)
