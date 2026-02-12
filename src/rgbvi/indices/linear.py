@@ -10,95 +10,106 @@ import numpy as np
 from ..registry import register_index, IndexSpec
 from ..core import compute_index
 
-# Red minus Green: R - G, with R,G,B in [0,1] => [-1,1]
+# Red minus Green: R - G, with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="rmg",
         full_name="Red Minus Green",
         formula=lambda R,G,B: R - G,
-        domain=(-1, 1),
+        range=(-254.0, 254.0),
         map01=True,
         citation="Woebbecke D.M., Meyer G.E., Von Bargen K., Mortensen D.A. 'Color indices for weed identification under various soil, residue, and lighting conditions' (1995) Transactions of the American Society of Agricultural Engineers, 38 (1), pp. 259 - 269, https://www.scopus.com/inward/record.uri?eid=2-s2.0-0029110322&partnerID=40&md5=d3430f82764dc64892eb6dc77186596e"
     )
 )
 
-# Green Minus Blue: G - B, with R,G,B in [0,1] => [-1,1]
+register_index(
+    IndexSpec(
+        name="gmr",
+        full_name="Green Minus Red",
+        formula=lambda R,G,B: G - R,
+        range=(-254.0, 254.0),
+        map01=True,
+        citation=""
+    )
+)
+
+# Green Minus Blue: G - B, with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="gmb",
         full_name="Green Minus Blue",
         formula=lambda R,G,B: G - B,
-        domain=(-1, 1),
+        range=(-254.0, 254.0),
         map01=True,
         citation="Woebbecke D.M., Meyer G.E., Von Bargen K., Mortensen D.A. 'Color indices for weed identification under various soil, residue, and lighting conditions' (1995) Transactions of the American Society of Agricultural Engineers, 38 (1), pp. 259 - 269, https://www.scopus.com/inward/record.uri?eid=2-s2.0-0029110322&partnerID=40&md5=d3430f82764dc64892eb6dc77186596e"
     )
 )
 
-# Excess Green: 2G - R - B, with R,G,B in [0,1] => [-2,2]
+# Excess Green: 2G - R - B, with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="exg",
         full_name="Excess Green",
-        # formula=lambda R,G,B: 2*G/(G+R+B+1e-3) - R/(G+R+B+1e-3) - B/(G+R+B+1e-3),
         formula=lambda R,G,B: 2*G - R - B,
-        domain=(-2.0, 2.0),
+        range=(-508, 508.0),
         map01=True
     )
 )
-
 
 register_index(
     IndexSpec(
         name="exr",
         full_name="Excess Red",
         formula=lambda R,G,B: 1.4*R - G,
-        domain=(-1.0, 1.4),
+        range=(-253.6, 356.0),
         map01=True
     )
 )
-# CIVE: 0.441R - 0.811G + 0.385B + 18.78745, with R,G,B in [0,1] => [-0.7373, 0.8997]
+# CIVE: 0.441R - 0.811G + 0.385B + 18.78745, with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="cive",
         full_name="Color Index of Vegetation",
-        formula=lambda R,G,B: 0.441*R - 0.811*G + 0.385*B + 0.07367627450980392, # Constant 18.78745 normalized by division by 255
-        domain=(-0.7373237254901961, 0.899676274509804),
+        formula=lambda R,G,B: 0.441*R - 0.811*G + 0.385*B + 18.78745,
+        range=(-187.19155, 228.60645),
         map01=True,
         citation="Kataoka, T.; Kaneko, T.; Okamoto, H.; Hata, S. 'Crop growth estimation system using machine vision', Proceedings 2003 IEEE/ASME International Conference on Advanced Intelligent Mechatronics (AIM 2003), Kobe, Japan, 2003, pp. b1079-b1083 vol.2, doi: 10.1109/AIM.2003.1225492."
     )
 )
 
-# Inverse CIVE: -0.441R + 0.811G - 0.385B - 18.78745, with R,G,B in [0,1] => [-0.8997, 0.7373]
+# Inverse CIVE: -0.441R + 0.811G - 0.385B - 18.78745, with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="inv_cive",
-        full_name="Color Index of Vegetation",
-        formula=lambda R,G,B: -0.441*R + 0.811*G - 0.385*B + 0.07367627450980392, # Constant 18.78745 normalized by division by 255
-        domain=(-0.899676274509804, 0.7373237254901961),
+        full_name="Inverse Color Index of Vegetation",
+        formula=lambda R,G,B: -0.441*R + 0.811*G - 0.385*B - 18.78745,
+        range=(-228.60645, 187.19155),
         map01=True,
         citation="Kataoka, T.; Kaneko, T.; Okamoto, H.; Hata, S. 'Crop growth estimation system using machine vision', Proceedings 2003 IEEE/ASME International Conference on Advanced Intelligent Mechatronics (AIM 2003), Kobe, Japan, 2003, pp. b1079-b1083 vol.2, doi: 10.1109/AIM.2003.1225492."
     )
 )
 
-# Excess Green minus Excess Red: (3G - 2.4R - B), with R,G,B in [0,1] => [-3.4, 3.0]
+# Excess Green minus Excess Red: (3G - 2.4R - B), with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="exg_exr",
         full_name="Excess Green minus Excess Red",
-        formula=lambda R,G,B: (3*G - 2.4*R - B),
-        domain=(-3.4, 3.0),
-        map01=True
+        formula=lambda R,G,B: 3*G - 2.4*R - B,
+        range=(-864.0, 761.6),
+        map01=True,
+        citation=""
     )
 )
 
-# vNDVI - Visible Band NDVI: 0.5268 * (R ** -0.1294 * G ** 0.3389 * B ** -0.3118) with R,G,B in [0,1] => [-1,1]
+# vNDVI - Visible Band NDVI: 0.5268 * (R ** -0.1294 * G ** 0.3389 * B ** -0.3118) with R,G,B in [0, 255]
 register_index(
     IndexSpec(
         name="vndvi",
         full_name="Visible Band NDVI",
         formula=lambda R,G,B: 0.5268 * (R ** -0.1294 * G ** 0.3389 * B ** -0.3118),
-        domain=(0.0506927, 11.0980267),
-        map01=True
+        range=(0.04569621600678701, 3.445261836411199),
+        map01=True,
+        citation=""
     )
 )
 
@@ -108,24 +119,11 @@ register_index(
         name="mexg",
         full_name="Modified Excess Green",
         formula=lambda R,G,B: 1.262*G - 0.884*R - 0.311*B,
-        domain=(-1.195, 1.262),
-        map01=True
-    )
-)
-
-# RGBVI: RGB Vegetation Index: (G^2 - R*B) / (G^2 + R*B), with R,G,B in [0,1] => [-1,1]
-register_index(
-    IndexSpec(
-        name="rgbvi",
-        full_name="RGB Vegetation Index",
-        formula=lambda R,G,B: (G**2 - R*B) / (G**2 + R*B + 1e-6), # small constant to avoid division by zero
-        domain=(-1, 1),
+        range=(-303.463, 320.615),
         map01=True,
-        citation="Meyer, G.E.; Hindman, T.W.; Laksmi, K. 'Color vegetation indices for automated crop imaging applications', Proceedings of SPIE - The International Society for Optical Engineering, 1999, vol. 3583, pp. 349-356, doi: 10.1117/12.336833."
+        citation=""
     )
 )
-
-
 
 def exg(img: np.ndarray, **kwargs) -> np.ndarray:
     """Compute the Excess Green (ExG) index for an RGB image.

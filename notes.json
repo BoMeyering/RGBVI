@@ -1,0 +1,86 @@
+{   
+    "Red Minus Green": {
+        "short_name": "rmg",
+        "formula": "R - G",
+        "description": "Red Minus Green index highlights areas with higher red reflectance compared to green, useful for vegetation analysis.",
+        "reference": "https://www.sciencedirect.com/science/article/abs/pii/S0034425717302335",
+        "notes": "Simple index - highlights soil and brown vegetation; may be influenced by lighting conditions."
+    },
+    "Green Minus Red": {
+        "short_name": "gmr",
+        "formula": "G - R",
+        "description": "Green Minus Red index emphasizes areas with higher green reflectance compared to red, useful for vegetation detection.",
+        "reference": "https://www.sciencedirect.com/science/article/abs/pii/S0034425717302335",
+        "notes": "Effective for highlighting healthy vegetation; may be affected by soil background and lighting."
+    },
+    "Green Minus Blue": {
+        "short_name": "gmb",
+        "formula": "G - B",
+        "description": "Green Minus Blue index focuses on the difference between green and blue reflectance, aiding in vegetation analysis.",
+        "reference": "https://www.sciencedirect.com/science/article/abs/pii/S0034425717302335",
+        "notes": "Useful for vegetation detection; can be influenced by atmospheric conditions and soil color."
+    },
+    "Excess Green": {
+        "short_name": "exg",
+        "formula": "2 * G - R - B",
+        "description": "Excess Green Index enhances the green component, making it effective for vegetation detection.",
+        "reference": "Woebbecke et al., 'Color Indices for Weed Identification under Various Soil, Residue, and Lighting Conditions', Transactions of the ASAE, 1995.",
+        "notes": "Widely used for vegetation segmentation; seems less sensitive to lighting variations and shadows."
+    },
+    "Excess Red": {
+        "short_name": "exr",
+        "formula": "(1.4 * R) - G",
+        "description": "Excess Red Index emphasizes the red component, useful for detecting vegetation stress.",
+        "reference": "https://www.mdpi.com/2072-4292/12/3/426",
+        "notes": "Susceptible to lighting variations; shaded brown areas may have lower values. Consider using alongside other indices."
+    },
+    "Color Index of Vegetation": {
+        "short_name": "cive",
+        "formula": "-0.441 * R + 0.811 * G - 0.385 * B + 18.78745",
+        "description": "CIVE is designed to enhance vegetation detection by combining RGB channels.",
+        "reference": "Kataoka et al., 'Crop growth estimation system using machine vision', IEEE/ASME AIM 2003.",
+        "notes": "Effective for distinguishing vegetation from non-vegetation in various conditions. Higher values indicate lower vegetation presence."
+    },
+    "Inverse Color Index of Vegetation": {
+        "short_name": "inv_cive",
+        "formula": "-0.441 * R + 0.811 * G - 0.385 * B - 18.78745",
+        "description": "Inverse CIVE enhances vegetation detection by inverting the traditional CIVE formula.",
+        "reference": "Kataoka et al., 'Crop growth estimation system using machine vision', IEEE/ASME AIM 2003.",
+        "notes": "Higher values indicate higher vegetation presence, making it more intuitive for certain applications."
+    },
+    "Excess Green minus Excess Red": {
+        "short_name": "exg_exr",
+        "formula": "(2 * G - R - B) - ((1.4 * R) - G)",
+        "description": "This index combines Excess Green and Excess Red to enhance vegetation detection.",
+        "reference": "Woebbecke et al., 'Color Indices for Weed Identification under Various Soil, Residue, and Lighting Conditions', Transactions of the ASAE, 1995.",
+        "notes": "Effective for distinguishing vegetation from soil and other backgrounds, but susceptible to lighting variations."
+    },
+    "Visible-band Normalized Difference Vegetation Index": {
+        "short_name": "vndvi",
+        "formula": "(G - R) / (G + R)",
+        "description": "VNVDI is a visible-band alternative to NDVI, using green and red channels to assess vegetation health.",
+        "reference": "Costa et al., 'Visible-band Normalized Difference Vegetation Index for Remote Sensing of Vegetation', Remote Sensing, 2010.",
+        "notes": "Seems to be uncalibrated.Useful when NIR data is unavailable; however, it may be less sensitive than traditional NDVI."
+    },
+    "Woebbecke Index": {
+        "short_name": "wi",
+        "formula": "(G - B) / (|R - G| + 1)",
+        "description": "Woebbecke Index is designed for weed identification by emphasizing the difference between green and blue channels.",
+        "reference": "Woebbecke et al., 'Color Indices for Weed Identification under Various Soil, Residue, and Lighting Conditions', Transactions of the ASAE, 1995.",
+        "notes": "Terrible index. DONT USE!. adding 1 to the denominator avoids division by zero issues."
+    },
+    "Visible Atmospherically Resistant Index": {
+        "short_name": "vari",
+        "formula": "(G - R) / (G + R - B)",
+        "description": "VARI is designed to minimize atmospheric effects while assessing vegetation using visible bands.",
+        "reference": "Gitelson et al., 'A Simple Algorithm for Retrieving Leaf Area Index and Fraction of Absorbed Photosynthetically Active Radiation from MODIS Data', Remote Sensing of Environment, 2002.",
+        "notes": "Effective for vegetation monitoring in various atmospheric conditions; however, may still be influenced by soil background. Has some noisy pixels"
+    },
+    "Modified Green Red Vegetation Index": {
+        "short_name": "mgrvi",
+        "formula": "(G^2 - R^2) / (G^2 + R^2)",
+        "description": "MGRVI enhances vegetation detection by emphasizing the difference between squared green and red reflectance.",
+        "reference": "Zhang et al., 'A Modified Green Red Vegetation Index (MGRVI) for Improved Vegetation Monitoring Using Moderate Resolution Imaging Spectroradiometer (MODIS) Data', Remote Sensing, 2015.",
+        "notes": "Provides improved sensitivity to vegetation changes compared to traditional indices; useful for monitoring crop health and growth. Good index overall."
+    }
+}

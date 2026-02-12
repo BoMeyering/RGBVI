@@ -10,6 +10,7 @@ import numpy as np
 from typing import Optional
 from numpy.typing import ArrayLike
 import scipy.ndimage as ndi
+import matplotlib.pyplot as plt
 
 from .registry import INDEX_SPECS
 
@@ -92,8 +93,7 @@ def compute_index(
     except Exception as e:
         raise ValueError("Failed to convert input image to NumPy array.") from e
 
-    img = np.where(img == 1, 1, img) # Fill in pixels with 1 to avoid division by zero
-    img /= 255.0 # Normalize to [0, 1]
+    img = np.where(img == 0, 1, img) # Fill in pixels with 1 to avoid division by zero
     R, G, B = img[..., 0], img[..., 1], img[..., 2]
 
     if mask is not None:
@@ -106,26 +106,44 @@ def compute_index(
         mask = np.ones(R.shape, dtype=bool)
 
     idx_raw = spec.formula(R, G, B)
+
     valid = np.isfinite(idx_raw)
+    valid_mean = np.mean(mask & valid)
+    invalid = ~(mask & valid)
+    idx_raw[invalid] = valid_mean  # Set invalid pixels to mean of valid pixels
+    print(np.min(idx_raw[valid]), np.max(idx_raw[valid]))
+
+    plt.hist(idx_raw[valid].flatten(), bins=100)
+    plt.title(f"Histogram of raw index values for {index_name}")
+    plt.xlabel("Index Value")
+    plt.ylabel("Frequency")
+    plt.show()
 
     # Mask the raw_idx to only valid pixels
     values = idx_raw * valid
 
 
-    print("Values shape:", values.shape)
     if values.size == 0:
         return np.nan * np.ones_like(idx_raw)
 
-    if spec.map01 and spec.domain is not None:
-        dmin, dmax = spec.domain
-        values = (idx_raw - dmin) / (dmax - dmin)
-        values = np.clip(values, 0.0, 1.0)
-    
     if robust_mean:
-        p5, p95 = np.percentile(values, [5, 95])
+        p5, p95 = np.percentile(values, [.01, 99.99])
         print("P5, P95:", p5, p95)
         # values = values[(values >= p5) & (values <= p95)]
         values = np.clip(values, p5, p95)
+
+    if spec.map01 and spec.range is not None:
+        rmin, rmax = spec.range
+        rmin, rmax = values.min(), idx_raw.max()
+        # values = (idx_raw - rmin) / (rmax - rmin)
+        values = np.clip(values, 0.0, 1.0)
+        print(values)
+    
+    # if robust_mean:
+    #     p5, p95 = np.percentile(values, [1, 99])
+    #     print("P5, P95:", p5, p95)
+    #     # values = values[(values >= p5) & (values <= p95)]
+    #     values = np.clip(values, p5, p95)
 
     # return values.mean().astype(np.float32)
     return values * mask
